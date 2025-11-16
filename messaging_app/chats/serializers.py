@@ -2,6 +2,7 @@
 Serializers for the messaging app.
 """
 from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 from .models import User, Conversation, Message, ConversationParticipant
 
 
@@ -51,6 +52,12 @@ class MessageSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['message_id', 'sent_at']
 
+    def validate_message_body(self, value):
+        """Validate message body is not empty."""
+        if not value or not value.strip():
+            raise ValidationError("Message body cannot be empty.")
+        return value
+
 
 class ConversationParticipantSerializer(serializers.ModelSerializer):
     """Serializer for ConversationParticipant."""
@@ -83,6 +90,14 @@ class ConversationSerializer(serializers.ModelSerializer):
             'created_at'
         ]
         read_only_fields = ['conversation_id', 'created_at']
+
+    def validate_participant_ids(self, value):
+        """Validate that at least one participant is provided."""
+        if not value or len(value) == 0:
+            raise ValidationError("At least one participant is required.")
+        if len(value) < 2:
+            raise ValidationError("A conversation must have at least 2 participants.")
+        return value
 
     def create(self, validated_data):
         """Create conversation and add participants."""
