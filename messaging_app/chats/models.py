@@ -8,7 +8,11 @@ from django.utils import timezone
 
 
 class User(AbstractUser):
-    """Custom User model extending AbstractUser."""
+    """
+    Custom User model extending AbstractUser.
+    
+    Inherits password field from AbstractUser (stored as password_hash).
+    """
     user_id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
