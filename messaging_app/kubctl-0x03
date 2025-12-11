@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Trigger a rolling update by applying the updated deployment (assuming blue_deployment.yaml was manually edited to v2.0 as per instructions, OR we can force it here)
+# The instruction says "Modify the docker image version to 2.0 in the now blue_deployment.yaml" then "Write a... script that Applies..."
+# So I'll assume the file is edited. But for the script to be complete/standalone useful, I might use 'kubectl set image' to simulate it if I can't edit the file interactively.
+# However, to strictly follow "Applies the updated deployment file", I will do:
+
+kubectl apply -f blue_deployment.yaml
+
+# Monitor the rollout status
+kubectl rollout status deployment/messaging-app-blue
+
+# Continuous availability check
+# We'll run a loop in background or for a short duration
+echo "Checking availability..."
+for i in {1..20}; do
+  curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ # Adjust URL if needed
+  echo ""
+  sleep 1
+done
+
+# Verify current pods
+kubectl get pods

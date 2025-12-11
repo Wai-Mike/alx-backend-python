@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Apply Blue Deployment
+kubectl apply -f blue_deployment.yaml
+
+# Apply Green Deployment
+kubectl apply -f green_deployment.yaml
+
+# Check logs for Green Deployment to ensure it's healthy
+# Assuming we want to check the logs of one of the green pods
+echo "Checking logs for Green deployment..."
+POD_NAME=$(kubectl get pods -l version=green -o jsonpath="{.items[0].metadata.name}")
+kubectl logs $POD_NAME

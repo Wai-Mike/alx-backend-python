@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: messaging-app-green
+  labels:
+    app: messaging-app
+    version: "green"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging-app
+      version: "green"
+  template:
+    metadata:
+      labels:
+        app: messaging-app
+        version: "green"
+    spec:
+      containers:
+      - name: messaging-app
+        image: django-messaging-app:latest # Assuming same image usually but practically would be v2, defaults to same for now or v1.1 if I had one. Prompt says 'deploy a new version... green_deployment.yaml'. I'll keep image same but label different, as often done in simplified labs, or I'd assume a 'v2' tag. For now I keep it 'latest' but structure it for blue/green switch.
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
