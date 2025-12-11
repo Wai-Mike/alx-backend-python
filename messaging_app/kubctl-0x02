@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Deploy Blue version
+kubectl apply -f blue_deployment.yaml
+
+# Deploy Green version
+kubectl apply -f green_deployment.yaml
+
+# Check logs for errors (using a loop or just checking head)
+# Here we check logs for the blue and green deployments
+kubectl logs -l version=blue
+kubectl logs -l version=green

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Increase the number of replicas to 3
+kubectl scale deployment messaging-app-deployment --replicas=3
+
+# Verify that multiple pods are running
+kubectl get pods
+
+# Perform load testing using wrk (assuming service is exposed via localhost proxy or similar, here just using a placeholder URL or the service name if inside cluster context, but usually locally we might need port-forwarding. I'll use a placeholder command as per instruction "Perform load testing... using wrk")
+# Assuming the service is accessible at http://localhost:80 via port-forward or ingress (though ingress is next task).
+# I'll add a comment or a generic wrk command. The instruction doesn't specify the URL.
+wrk -t12 -c400 -d30s http://localhost:80
+
+# Monitor Resource Usage
+kubectl top pods
